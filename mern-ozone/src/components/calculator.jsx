@@ -22,7 +22,7 @@ const Calculator = () => {
     const handleCalculate = () => {
     const width = parseFloat(operand1);
     const height = parseFloat(operand2);
-    
+
     const drag_coeff = parseFloat(operand4);
     const acc_time = parseFloat(operand5);
     const slope = parseFloat(operand6);
@@ -92,6 +92,7 @@ const Calculator = () => {
   };
 
   return (
+    <div>
     <div className="p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10">
       <div className='text-3xl p-3 mb-2 w-full text-center font-bold'>Powertrain Specification Calculator</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
@@ -224,31 +225,52 @@ const Calculator = () => {
           Clear
         </button>
       </div>
+      </div>
+      <div className='p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10'>
+        <div className='text-2xl p-3 mb-2 w-full text-left font-bold'> Forces</div>
       {results.error ? (
         <div className="text-right text-red-500">{results.error}</div>
       ) : (
-        <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {results.frontal !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'>Frontal Area: {results.frontal} m²</div>} 
-          {results.acceleration !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'>Acceleration: {results.acceleration} m/s⁻²</div>}
-          {results.roll_rest !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'>Rolling Resistance: {results.roll_rest} N</div>}
-          {results.acc_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Acceleration Force: {results.acc_force} N</div>}
-          {results.areo_drag !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Aerodynamic Drag: {results.areo_drag} N</div>}
-          {results.grade_resist !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Grade Resistance: {results.grade_resist} N</div>}
-          {results.tot_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Tractive Effort: {results.tot_trac_eff} N</div>}
-          {results.crusing_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Tract Effort: {results.crusing_trac_eff} N</div>}
-          {results.wheel_torque !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Torque: {results.wheel_torque} Nm</div>}
-          {results.wheel_rpm !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel RPM: {results.wheel_rpm} rpm</div>}
-          {results.wheel_power !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Power: {results.wheel_power} kW</div>}
-          {results.crus_wheel_pow !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Wheel Power: {results.crus_wheel_pow} kW</div>}
-          {results.crus_torq !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Torque Needed: {results.crus_torq} Nm</div>}
+        <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
+         {results.roll_rest !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'>Rolling Resistance: {results.roll_rest} N</div>}
+         {results.acc_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Acceleration Force: {results.acc_force} N</div>}
+         {results.areo_drag !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Aerodynamic Drag: {results.areo_drag} N</div>}
+         {results.grade_resist !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Grade Resistance: {results.grade_resist} N</div>}
+         {results.tot_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Tractive Effort: {results.tot_trac_eff} N</div>}
+         {results.crusing_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Tract Effort: {results.crusing_trac_eff} N</div>}
+         {results.trac_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Traction Force: {results.trac_force} N</div>}
+        </div>
+      )}
+      </div>
+      <div className='p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10'>
+        <div className='text-2xl p-3 mb-2 w-full text-left font-bold'> Wheel</div>
+      {results.error ? (
+        <div className="text-right text-red-500">{results.error}</div>
+      ) : (
+        <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
+        {results.wheel_torque !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Torque: {results.wheel_torque} Nm</div>}
+        {results.wheel_rpm !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel RPM: {results.wheel_rpm} rpm</div>}
+        {results.wheel_power !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Power: {results.wheel_power} kW</div>}
+        {results.crus_wheel_pow !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Wheel Power: {results.crus_wheel_pow} kW</div>}
+        {results.crus_torq !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Torque Needed: {results.crus_torq} Nm</div>}
+        </div>
+      )}
+      </div>
+      <div className='p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10'>
+        <div className='text-2xl p-3 mb-2 w-full text-left font-bold'> Wheel</div>
+      {results.error ? (
+        <div className="text-right text-red-500">{results.error}</div>
+      ) : (
+        <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
           {results.motor_torque !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Torque: {results.motor_torque} Nm</div>}
-          {results.trac_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Traction Force: {results.trac_force} N</div>}
           {results.motor_speed !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Speed: {results.motor_speed} rpm</div>}
           {results.motor_power !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Power: {results.motor_power} kW</div>}
           {results.tot_range !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Range @60% efficiency: {results.tot_range} Km</div>}
           {results.theoretical_consump !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Theoretical Consumption: {results.theoretical_consump} Wh/Km</div>}
         </div>
       )}
+      </div>
+
     </div>
   );
 };
