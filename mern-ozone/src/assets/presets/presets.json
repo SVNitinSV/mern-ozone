@@ -1,0 +1,6 @@
+{
+    "preset1": { "operand1": "5", "operand2": "10" },
+    "preset2": { "operand1": "15", "operand2": "20" },
+    "preset3": { "operand1": "25", "operand2": "30" }
+  }
+  

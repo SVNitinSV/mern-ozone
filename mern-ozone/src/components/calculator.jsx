@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import presets from './presets.json'; 
 
 const Calculator = () => {
     const [operand1, setOperand1] = useState('');
@@ -16,6 +17,7 @@ const Calculator = () => {
     const [operand13, setOperand13] = useState('');
     const [operand14, setOperand14] = useState('');
     const [operand15, setOperand15] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
     
     const [results, setResults] = useState({});
     
@@ -85,11 +87,32 @@ const Calculator = () => {
     });
   };
 
+
+  const handlePresetChange = (event) => {
+    const selectedPreset = event.target.value;
+    if (presets[selectedPreset]) {
+      setOperand1(presets[selectedPreset].operand1);
+      setOperand2(presets[selectedPreset].operand2);
+      setOperand3(presets[selectedPreset].operand3);
+      setOperand4(presets[selectedPreset].operand4);
+      setOperand5(presets[selectedPreset].operand5);
+      setOperand6(presets[selectedPreset].operand6);
+      setOperand7(presets[selectedPreset].operand7);
+      setOperand8(presets[selectedPreset].operand8);
+      setOperand9(presets[selectedPreset].operand9);
+      setOperand10(presets[selectedPreset].operand10);
+      setOperand11(presets[selectedPreset].operand11);
+      setOperand12(presets[selectedPreset].operand12);
+      setOperand13(presets[selectedPreset].operand13);
+    }
+  };
+
   const handleClear = () => {
     setOperand1('');
     setOperand2('');
     setResults({});
   };
+  
 
   return (
     <div>
@@ -216,6 +239,19 @@ const Calculator = () => {
             placeholder="Air Density"
           />
         </div>
+
+        <div>
+           <div className='text-lg p-2 font-semibold text-center'>Preset</div> 
+           <select onChange={handlePresetChange} className="w-full p-2 mb-2 text-left bg-gray-100 rounded">
+          <option value="">Select a preset</option>
+          {Object.keys(presets).map((presetKey) => (
+            <option key={presetKey} value={presetKey}>
+              {presetKey}
+            </option>
+          ))}
+        </select>
+          </div>
+
       </div>
       <div className="flex justify-center items-center w-full mb-5">
         <button className="btn bg-black text-white py-2 px-4 m-2 rounded" onClick={handleCalculate}>
@@ -232,13 +268,13 @@ const Calculator = () => {
         <div className="text-right text-red-500">{results.error}</div>
       ) : (
         <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
-         {results.roll_rest !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'>Rolling Resistance: {results.roll_rest} N</div>}
-         {results.acc_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Acceleration Force: {results.acc_force} N</div>}
-         {results.areo_drag !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Aerodynamic Drag: {results.areo_drag} N</div>}
-         {results.grade_resist !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Grade Resistance: {results.grade_resist} N</div>}
-         {results.tot_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Tractive Effort: {results.tot_trac_eff} N</div>}
-         {results.crusing_trac_eff !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Tract Effort: {results.crusing_trac_eff} N</div>}
-         {results.trac_force !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Traction Force: {results.trac_force} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'>Rolling Resistance: {results.roll_rest} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Acceleration Force: {results.acc_force} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Aerodynamic Drag: {results.areo_drag} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Grade Resistance: {results.grade_resist} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Tractive Effort: {results.tot_trac_eff} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Tract Effort: {results.crusing_trac_eff} N</div>}
+         {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Traction Force: {results.trac_force} N</div>}
         </div>
       )}
       </div>
@@ -248,25 +284,25 @@ const Calculator = () => {
         <div className="text-right text-red-500">{results.error}</div>
       ) : (
         <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
-        {results.wheel_torque !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Torque: {results.wheel_torque} Nm</div>}
-        {results.wheel_rpm !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel RPM: {results.wheel_rpm} rpm</div>}
-        {results.wheel_power !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Power: {results.wheel_power} kW</div>}
-        {results.crus_wheel_pow !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Wheel Power: {results.crus_wheel_pow} kW</div>}
-        {results.crus_torq !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Torque Needed: {results.crus_torq} Nm</div>}
+        {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Torque: {results.wheel_torque} Nm</div>}
+        {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel RPM: {results.wheel_rpm} rpm</div>}
+        {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Wheel Power: {results.wheel_power} kW</div>}
+        {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Wheel Power: {results.crus_wheel_pow} kW</div>}
+        {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Crusing Torque Needed: {results.crus_torq} Nm</div>}
         </div>
       )}
       </div>
       <div className='p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10'>
-        <div className='text-2xl p-3 mb-2 w-full text-left font-bold'> Wheel</div>
+        <div className='text-2xl p-3 mb-2 w-full text-left font-bold'> Transmission Efficiency</div>
       {results.error ? (
         <div className="text-right text-red-500">{results.error}</div>
       ) : (
         <div className="font-semibold text-md grid grid-cols-1 sm:grid-cols-1 gap-2">
-          {results.motor_torque !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Torque: {results.motor_torque} Nm</div>}
-          {results.motor_speed !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Speed: {results.motor_speed} rpm</div>}
-          {results.motor_power !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Power: {results.motor_power} kW</div>}
-          {results.tot_range !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Range @60% efficiency: {results.tot_range} Km</div>}
-          {results.theoretical_consump !== undefined && <div className='bg-gray-100 rounded w-full p-2 mb-2'> Theoretical Consumption: {results.theoretical_consump} Wh/Km</div>}
+          {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Torque: {results.motor_torque} Nm</div>}
+          {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Speed: {results.motor_speed} rpm</div>}
+          { <div className='bg-gray-100 rounded w-full p-2 mb-2'> Motor Power: {results.motor_power} kW</div>}
+          {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Total Range @60% efficiency: {results.tot_range} Km</div>}
+          {<div className='bg-gray-100 rounded w-full p-2 mb-2'> Theoretical Consumption: {results.theoretical_consump} Wh/Km</div>}
         </div>
       )}
       </div>
