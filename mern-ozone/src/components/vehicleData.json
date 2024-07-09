@@ -1,0 +1,19 @@
+{
+    "2W": {
+      "L1": { "maxPower": 10, "maxGVW": 350 },
+      "L2": { "maxPower": 15, "maxGVW": 400 }
+    },
+    "3W": {
+      "L5": { "maxPower": 25, "maxGVW": 750 },
+      "L6": { "maxPower": 30, "maxGVW": 1000 }
+    },
+    "4W": {
+      "M1": { "maxPower": 50, "maxGVW": 1500 },
+      "N1": { "maxPower": 70, "maxGVW": 2000 }
+    },
+    "Truck": {
+      "N2": { "maxPower": 100, "maxGVW": 3500 },
+      "N3": { "maxPower": 200, "maxGVW": 7500 }
+    }
+  }
+  

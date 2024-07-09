@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import presets from './presets.json'; 
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import vehicleData from './vehicleData.json';
+
 
 const Calculator = () => {
     const [operand1, setOperand1] = useState('');
@@ -21,6 +23,12 @@ const Calculator = () => {
     
     const [results, setResults] = useState({});
     
+    const [vehicleCategory, setVehicleCategory] = useState('');
+    const [vehicleSubCategory, setVehicleSubCategory] = useState('');
+    const [presetName, setPresetName] = useState('');
+    const [presets, setPresets] = useState([]);
+  
+
     const handleCalculate = () => {
     const width = parseFloat(operand1);
     const height = parseFloat(operand2);
@@ -87,25 +95,53 @@ const Calculator = () => {
     });
   };
 
+ useEffect(() => {
+    const savedPresets = Cookies.get('presets');
+    if (savedPresets) {
+      setPresets(JSON.parse(savedPresets));
+    }
+  }, []);
 
-  const handlePresetChange = (event) => {
-    const selectedPreset = event.target.value;
-    if (presets[selectedPreset]) {
-      setOperand1(presets[selectedPreset].operand1);
-      setOperand2(presets[selectedPreset].operand2);
-      setOperand3(presets[selectedPreset].operand3);
-      setOperand4(presets[selectedPreset].operand4);
-      setOperand5(presets[selectedPreset].operand5);
-      setOperand6(presets[selectedPreset].operand6);
-      setOperand7(presets[selectedPreset].operand7);
-      setOperand8(presets[selectedPreset].operand8);
-      setOperand9(presets[selectedPreset].operand9);
-      setOperand10(presets[selectedPreset].operand10);
-      setOperand11(presets[selectedPreset].operand11);
-      setOperand12(presets[selectedPreset].operand12);
-      setOperand13(presets[selectedPreset].operand13);
+  const handleVehicleCategoryChange = (e) => {
+    setVehicleCategory(e.target.value);
+    setVehicleSubCategory('');
+  };
+
+  const handleVehicleSubCategoryChange = (e) => {
+    setVehicleSubCategory(e.target.value);
+  };
+
+  const handleSavePreset = () => {
+    const newPreset = {
+      name: presetName,
+      vehicleCategory,
+      vehicleSubCategory,
+      operand1,
+      operand2
+    };
+    const updatedPresets = [...presets, newPreset];
+    setPresets(updatedPresets);
+    Cookies.set('presets', JSON.stringify(updatedPresets));
+  };
+
+  const handleLoadPreset = (e) => {
+    const selectedPreset = presets.find(preset => preset.name === e.target.value);
+    if (selectedPreset) {
+      setVehicleCategory(selectedPreset.vehicleCategory);
+      setVehicleSubCategory(selectedPreset.vehicleSubCategory);
+      setOperand1(selectedPreset.operand1);
+      setOperand2(selectedPreset.operand2);
     }
   };
+
+  const limits =
+    vehicleCategory && vehicleSubCategory
+      ? vehicleData[vehicleCategory][vehicleSubCategory]
+      : null;
+
+  const powerExceedsLimit = operand1 && limits && parseFloat(operand1) > limits.maxPower;
+  const gvwExceedsLimit = operand2 && limits && parseFloat(operand2) > limits.maxGVW;
+
 
   const handleClear = () => {
     setOperand1('');
@@ -116,6 +152,90 @@ const Calculator = () => {
 
   return (
     <div>
+   <div className="p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10">
+  <div className="mb-4">
+    <label className="block mb-1">Vehicle Category:</label>
+    <select
+      className="w-full p-2 border border-gray-300 rounded"
+      value={vehicleCategory}
+      onChange={handleVehicleCategoryChange}
+    >
+      <option value="">Select Category</option>
+      {Object.keys(vehicleData).map((category) => (
+        <option key={category} value={category}>
+          {category}
+        </option>
+      ))}
+    </select>
+  </div>
+  <div className="mb-4">
+    <label className="block mb-1">Vehicle SubCategory:</label>
+    <select
+      className="w-full p-2 border border-gray-300 rounded"
+      value={vehicleSubCategory}
+      onChange={handleVehicleSubCategoryChange}
+      disabled={!vehicleCategory}
+    >
+      <option value="">Select SubCategory</option>
+      {vehicleCategory &&
+        Object.keys(vehicleData[vehicleCategory]).map((subCategory) => (
+          <option key={subCategory} value={subCategory}>
+            {subCategory}
+          </option>
+        ))}
+    </select>
+  </div>
+  <div className="mb-4">
+    <label className="block mb-1">Power (kW):</label>
+    <input
+      type="number"
+      className="w-full p-2 border border-gray-300 rounded"
+      value={operand1}
+      onChange={(e) => setOperand1(e.target.value)}
+    />
+    {powerExceedsLimit && <p className="text-red-500 mt-1">Power exceeds limit!</p>}
+  </div>
+  <div className="mb-4">
+    <label className="block mb-1">GVW (kg):</label>
+    <input
+      type="number"
+      className="w-full p-2 border border-gray-300 rounded"
+      value={operand2}
+      onChange={(e) => setOperand2(e.target.value)}
+    />
+    {gvwExceedsLimit && <p className="text-red-500 mt-1">GVW exceeds limit!</p>}
+  </div>
+  <div className="mb-4">
+    <label className="block mb-1">Preset Name:</label>
+    <input
+      type="text"
+      className="w-full p-2 border border-gray-300 rounded"
+      value={presetName}
+      onChange={(e) => setPresetName(e.target.value)}
+    />
+  </div>
+  <button
+    className="bg-black text-white py-2 px-4 rounded"
+    onClick={handleSavePreset}
+  >
+    Save Preset
+  </button>
+  <div className="mt-4">
+    <label className="block mb-1">Load Preset:</label>
+    <select
+      className="w-full p-2 border border-gray-300 rounded"
+      onChange={handleLoadPreset}
+      defaultValue=""
+    >
+      <option value="" disabled>Select Preset</option>
+      {presets.map((preset, index) => (
+        <option key={index} value={preset.name}>
+          {preset.name}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
     <div className="p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-3xl mx-auto mt-10">
       <div className='text-3xl p-3 mb-2 w-full text-center font-bold'>Powertrain Specification Calculator</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 w-full">
@@ -240,17 +360,7 @@ const Calculator = () => {
           />
         </div>
 
-        <div>
-           <div className='text-lg p-2 font-semibold text-center'>Preset</div> 
-           <select onChange={handlePresetChange} className="w-full p-2 mb-2 text-left bg-gray-100 rounded">
-          <option value="">Select a preset</option>
-          {Object.keys(presets).map((presetKey) => (
-            <option key={presetKey} value={presetKey}>
-              {presetKey}
-            </option>
-          ))}
-        </select>
-          </div>
+
 
       </div>
       <div className="flex justify-center items-center w-full mb-5">
