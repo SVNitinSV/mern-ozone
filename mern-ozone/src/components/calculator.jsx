@@ -36,7 +36,7 @@ const Calculator = () => {
     const [operand3, setOperand3] = useState('');
     const [operand4, setOperand4] = useState('');
     const [operand5, setOperand5] = useState('');
-    const [operand6, setOperand6] = useState('');
+    const [operand6, setOperand6] = useState('0');
     const [operand7, setOperand7] = useState('');
     const [operand8, setOperand8] = useState('');
     const [operand9, setOperand9] = useState('');
